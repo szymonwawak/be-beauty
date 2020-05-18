@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -13,6 +14,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
+import com.example.bebeauty.model.Product;
+import com.example.bebeauty.repository.ProductRepository;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -22,9 +25,11 @@ import java.io.IOException;
 
 public class BarcodeScanner extends AppCompatActivity {
 
+    private BarcodeDetector barcodeDetector;
     private SurfaceView surfaceView;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
+    ProductRepository productRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class BarcodeScanner extends AppCompatActivity {
 
     private void initSources() {
         surfaceView = findViewById(R.id.surfaceView);
+        productRepository = new ProductRepository();
     }
 
     private void checkPermissions() throws IOException {
@@ -54,7 +60,7 @@ public class BarcodeScanner extends AppCompatActivity {
     }
 
     private void initScanner() {
-        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
+        barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
         CameraSource.Builder cameraSourceBuilder = new CameraSource.Builder(this, barcodeDetector);
@@ -91,23 +97,35 @@ public class BarcodeScanner extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    
+
     private Detector.Processor<Barcode> getDetector() {
         return new Detector.Processor<Barcode>() {
 
             @Override
             public void release() {
-                Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                if (barcodes.size() != 0) {
-                    finish();
+                if (barcodes.size() > 0) {
+                    processFoundBarcode(barcodes.valueAt(0));
                 }
             }
         };
+    }
+
+    private void processFoundBarcode(Barcode barcode) {
+        barcodeDetector.release();
+        Product product = productRepository.getProductByBarcode(barcode.displayValue);
+        if (product != null) {
+            Intent intent = new Intent(BarcodeScanner.this, ProductView.class);
+            intent.putExtra("product", product);
+            startActivity(intent);
+        } else {
+
+        }
+        finish();
     }
 
     @Override

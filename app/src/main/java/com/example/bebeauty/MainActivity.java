@@ -7,10 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.bebeauty.model.Product;
+import com.example.bebeauty.repository.ProductRepository;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button scanBarcode;
     Button findProducts;
+    ProductRepository productRepository = new ProductRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.scan_barcode: {
                 startActivity(new Intent(MainActivity.this, BarcodeScanner.class));
                 break;
+            }
+            case R.id.find_product: {
+                Product product = productRepository.getProductByBarcode("12345312");
+                System.out.println(product);
             }
         }
     }
