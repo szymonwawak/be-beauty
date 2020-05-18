@@ -2,13 +2,10 @@
     <string name="app_name">Be Beauty</string>
     <string name="scan_product_barcode">Zeskanuj kod kreskowy produktu</string>
     <string name="find_product">Wyszukaj produkt</string>
-
-    <string name="title_activity_barcode_scanner">BarcodeScanner</string>
     <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="product_name">Nazwa produktu:</string>
     <string name="product_manufacturer">Producent:</string>
-    <string name="average_score">Średnia ocena:</string>
+    <string name="average_score">Ocena:</string>
     <string name="product_description">Opis:</string>
     <string name="add_comment">Dodaj komentarz</string>
     <string name="score">Ocena</string>

@@ -14,6 +14,7 @@ public class Product implements Serializable {
     private Boolean accepted;
     private String barcode;
     private List<Comment> comments;
+    private List<Ingredient> ingredients;
 
     public long getId() {
         return id;
@@ -85,5 +86,13 @@ public class Product implements Serializable {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }
