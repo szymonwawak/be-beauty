@@ -2,7 +2,9 @@ package com.example.bebeauty.model;
 
 import androidx.annotation.NonNull;
 
-public class Category {
+import java.io.Serializable;
+
+public class Category implements Serializable {
     private int id;
     private String name;
 
