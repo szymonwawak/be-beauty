@@ -3,6 +3,7 @@ package com.example.bebeauty.repository;
 import com.example.bebeauty.model.Product;
 import com.example.bebeauty.service.ApiService;
 import com.example.bebeauty.utils.RetrofitInstance;
+import com.google.android.gms.common.api.Api;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +19,10 @@ import retrofit2.Retrofit;
 public class ProductRepository {
 
     private Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+    private ApiService apiService = retrofit.create(ApiService.class);
 
     public List<Product> getAllProducts() {
         final List<Product> products = new ArrayList<Product>();
-        ApiService apiService = retrofit.create(ApiService.class);
         Call<List<Product>> call = apiService.getProducts();
         call.enqueue(new Callback<List<Product>>() {
                          @Override
@@ -39,7 +40,6 @@ public class ProductRepository {
 
     public Product getProductByBarcode(String barcode) {
         Product product = null;
-        ApiService apiService = retrofit.create(ApiService.class);
         RequestBody plainBarcode = RequestBody.create(MediaType.parse("text/plain"), barcode);
         Call<Product> call = apiService.findProductByBarcode(barcode);
         try {
@@ -50,4 +50,17 @@ public class ProductRepository {
         return product;
     }
 
+    public void saveProduct(Product product) {
+        Call<Product> call = apiService.saveProduct(product);
+        call.enqueue(new Callback<Product>() {
+                         @Override
+                         public void onResponse(Call<Product> call, Response<Product> response) {
+                         }
+
+                         @Override
+                         public void onFailure(Call<Product> call, Throwable t) {
+                         }
+                     }
+        );
+    }
 }

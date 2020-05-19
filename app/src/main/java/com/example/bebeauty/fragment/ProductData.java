@@ -1,4 +1,4 @@
-package com.example.bebeauty;
+package com.example.bebeauty.fragment;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.bebeauty.R;
 import com.example.bebeauty.model.Product;
 
 public class ProductData extends Fragment {

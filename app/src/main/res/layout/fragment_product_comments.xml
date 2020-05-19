@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorSecondaryAccent"
-    tools:context=".ProductComments">
+    tools:context=".fragment.ProductComments">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentRecycler"

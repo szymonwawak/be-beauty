@@ -1,4 +1,4 @@
-package com.example.bebeauty;
+package com.example.bebeauty.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bebeauty.R;
 import com.example.bebeauty.model.Comment;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         private RatingBar score;
         private TextView comment;
 
-        public CommentHolder(@NonNull View itemView) {
+        CommentHolder(@NonNull View itemView) {
             super(itemView);
             score = itemView.findViewById(R.id.score_value);
             comment = itemView.findViewById(R.id.comment_value);

@@ -23,11 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ProductView"></activity>
+        <activity android:name=".CreateProduct" />
+        <activity android:name=".ProductInfo" />
         <activity
             android:name=".BarcodeScanner"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_barcode_scanner"
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".MainActivity">
             <intent-filter>

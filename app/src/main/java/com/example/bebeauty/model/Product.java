@@ -16,6 +16,8 @@ public class Product implements Serializable {
     private List<Comment> comments;
     private List<Ingredient> ingredients;
 
+    private Category category;
+
     public long getId() {
         return id;
     }
@@ -94,5 +96,13 @@ public class Product implements Serializable {
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

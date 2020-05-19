@@ -119,11 +119,13 @@ public class BarcodeScanner extends AppCompatActivity {
         barcodeDetector.release();
         Product product = productRepository.getProductByBarcode(barcode.displayValue);
         if (product != null) {
-            Intent intent = new Intent(BarcodeScanner.this, ProductView.class);
+            Intent intent = new Intent(BarcodeScanner.this, ProductInfo.class);
             intent.putExtra("product", product);
             startActivity(intent);
         } else {
-
+            Intent intent = new Intent(BarcodeScanner.this, CreateProduct.class);
+            intent.putExtra("barcode", barcode);
+            startActivity(intent);
         }
         finish();
     }

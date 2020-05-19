@@ -1,4 +1,4 @@
-package com.example.bebeauty;
+package com.example.bebeauty.fragment;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.bebeauty.R;
+import com.example.bebeauty.adapter.CommentAdapter;
 import com.example.bebeauty.model.Product;
 
 public class ProductComments extends Fragment {
@@ -19,12 +21,16 @@ public class ProductComments extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_product_comments, container, false);
+        initFragment(view);
+        return view;
+    }
+
+    private void initFragment(View view) {
         Product product = (Product) getArguments().get("product");
         RecyclerView commentRecycler = view.findViewById(R.id.commentRecycler);
         CommentAdapter adapter = new CommentAdapter();
         adapter.setComments(product.getComments());
         initRecycler(commentRecycler, adapter);
-        return view;
     }
 
     private void initRecycler(RecyclerView commentRecycler, CommentAdapter adapter) {

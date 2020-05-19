@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorSecondaryAccent"
-    tools:context=".ProductIngredients">
+    tools:context=".fragment.ProductIngredients">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredientRecycler"

@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="15sp"
     app:cardBackgroundColor="@color/colorPrimary"
-    app:cardCornerRadius="20sp">
+    app:cardCornerRadius="20sp"
+    android:clickable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"

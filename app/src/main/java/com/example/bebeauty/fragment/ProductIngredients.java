@@ -1,4 +1,4 @@
-package com.example.bebeauty;
+package com.example.bebeauty.fragment;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.bebeauty.R;
+import com.example.bebeauty.adapter.IngredientsAdapter;
 import com.example.bebeauty.model.Product;
 
 public class ProductIngredients extends Fragment {
@@ -18,15 +20,19 @@ public class ProductIngredients extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_ingredients, container, false);
-        Product product = (Product) getArguments().get("product");
-        IngredientAdapter adapter = new IngredientAdapter();
-        adapter.setIngredients(product.getIngredients());
-        RecyclerView ingredientRecycler = view.findViewById(R.id.ingredientRecycler);
-        initRecycler(adapter, ingredientRecycler);
+        initFragment(view);
         return view;
     }
 
-    private void initRecycler(IngredientAdapter adapter, RecyclerView ingredientRecycler) {
+    private void initFragment(View view) {
+        Product product = (Product) getArguments().get("product");
+        IngredientsAdapter adapter = new IngredientsAdapter();
+        adapter.setIngredients(product.getIngredients());
+        RecyclerView ingredientRecycler = view.findViewById(R.id.ingredientRecycler);
+        initRecycler(adapter, ingredientRecycler);
+    }
+
+    private void initRecycler(IngredientsAdapter adapter, RecyclerView ingredientRecycler) {
         ingredientRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         ingredientRecycler.setHasFixedSize(true);
         ingredientRecycler.setAdapter(adapter);
