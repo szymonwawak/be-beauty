@@ -11,7 +11,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiService {
     @GET("products")
@@ -19,6 +21,10 @@ public interface ApiService {
 
     @POST("products/findByBarcode")
     Call<Product> findProductByBarcode(@Body String barcode);
+
+    @Multipart
+    @POST("products/filterProducts")
+    Call<List<Product>> filterProducts(@Part("name") String name, @Part("category") Category category);
 
     @POST("products")
     Call<Product> saveProduct(@Body Product product);

@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.find_product: {
-                Product product = productRepository.getProductByBarcode("12345312");
-                System.out.println(product);
+                startActivity(new Intent(MainActivity.this, FindProducts.class));
             }
         }
     }

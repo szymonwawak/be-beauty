@@ -40,7 +40,6 @@ public class ProductRepository {
 
     public Product getProductByBarcode(String barcode) {
         Product product = null;
-        RequestBody plainBarcode = RequestBody.create(MediaType.parse("text/plain"), barcode);
         Call<Product> call = apiService.findProductByBarcode(barcode);
         try {
             product = call.execute().body();
