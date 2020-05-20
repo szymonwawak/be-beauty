@@ -2,6 +2,7 @@ package com.example.bebeauty.service;
 
 
 import com.example.bebeauty.model.Category;
+import com.example.bebeauty.model.Comment;
 import com.example.bebeauty.model.Ingredient;
 import com.example.bebeauty.model.Product;
 
@@ -28,4 +29,6 @@ public interface ApiService {
     @GET("ingredients")
     Call<List<Ingredient>> getIngredients();
 
+    @POST("comments")
+    Call<Comment> saveComment(@Body Comment comment);
 }

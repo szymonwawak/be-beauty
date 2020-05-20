@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 public class Comment implements Serializable {
     private long id;
-    private Short score;
+    private Float score;
+    private String nickname;
     private String opinion;
+    private Product product;
 
     public long getId() {
         return id;
@@ -15,11 +17,11 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public Short getScore() {
+    public Float getScore() {
         return score;
     }
 
-    public void setScore(Short score) {
+    public void setScore(Float score) {
         this.score = score;
     }
 
@@ -29,5 +31,21 @@ public class Comment implements Serializable {
 
     public void setOpinion(String opinion) {
         this.opinion = opinion;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

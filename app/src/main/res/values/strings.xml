@@ -14,4 +14,6 @@
     <string name="choose_category">Wybierz kategorię</string>
     <string name="add_ingredients">Dodaj składniki</string>
     <string name="save_product">Zapisz produkt!</string>
+    <string name="nick">Nick</string>
+    <string name="send">Wyślij</string>
 </resources>

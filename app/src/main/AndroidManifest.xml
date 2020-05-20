@@ -23,6 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".FindProducts"></activity>
+        <activity android:name=".AddComment" />
         <activity android:name=".CreateProduct" />
         <activity android:name=".ProductInfo" />
         <activity

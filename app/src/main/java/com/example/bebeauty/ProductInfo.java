@@ -13,6 +13,7 @@ import com.example.bebeauty.fragment.ProductComments;
 import com.example.bebeauty.fragment.ProductData;
 import com.example.bebeauty.fragment.ProductIngredients;
 import com.example.bebeauty.model.Product;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 public class ProductInfo extends AppCompatActivity {
 
@@ -21,6 +22,7 @@ public class ProductInfo extends AppCompatActivity {
     Button dataButton;
     Button commentsButton;
     Button ingredientsButton;
+    ExtendedFloatingActionButton addCommentButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class ProductInfo extends AppCompatActivity {
         setDataButtonListener();
         setCommentButtonListener();
         setIngredientButtonListener();
+        setAddCommentButtonListener();
     }
 
     private void setDataButtonListener() {
@@ -94,6 +97,18 @@ public class ProductInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showIngredients();
+            }
+        });
+    }
+
+    private void setAddCommentButtonListener() {
+        addCommentButton = findViewById(R.id.add_comment_button);
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductInfo.this, AddComment.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
             }
         });
     }
