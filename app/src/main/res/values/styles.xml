@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
@@ -6,6 +6,39 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@android:color/black</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
+        <item name="colorControlHighlight">@android:color/holo_red_light</item>
+        <item name="android:textColorHint">@android:color/black</item>
+        <item name="android:editTextColor">@android:color/black</item>
+        <item name="android:spinnerItemStyle">@style/mySpinnerItemStyle</item>
+    </style>
+
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Material.DropDownItem.Spinner">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@color/colorSecondaryAccent</item>
+        <item name="android:popupBackground">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Linear.MaterialComponents.TextInputEditText" parent="ThemeOverlay.Design.TextInputEditText" tools:ignore="PrivateResource">
+        <item name="android:background">@color/colorSecondary</item>
+    </style>
+
+    <style name="CustomInputField" parent="Linear.MaterialComponents.TextInputEditText">
+        <item name="android:gravity">top</item>
+        <item name="android:paddingTop">5sp</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="colorControlNormal">@color/colorSecondaryDark</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
+        <item name="colorControlHighlight">@android:color/holo_red_light</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout" tools:ignore="PrivateResource">
+        <item name="android:gravity">top</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/black</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
@@ -16,6 +49,12 @@
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

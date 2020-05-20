@@ -11,9 +11,10 @@
     <string name="score">Ocena</string>
     <string name="comment_value">Treść</string>
     <string name="barcode">Kod kreskowy</string>
-    <string name="choose_category">Wybierz kategorię</string>
+    <string name="or_choose_category">Lub wybierz kategorię:</string>
     <string name="add_ingredients">Dodaj składniki</string>
     <string name="save_product">Zapisz produkt!</string>
     <string name="nick">Nick</string>
     <string name="send">Wyślij</string>
+    <string name="type_product_name">Podaj nazwę produktu:</string>
 </resources>

@@ -50,7 +50,7 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:queryHint="Wyszukaj produkt:"
+                app:queryHint="@string/type_product_name"
                 android:background="@color/colorSecondaryAccent"
                 android:tooltipText="@string/comment_value"
                 app:iconifiedByDefault="false">
@@ -60,7 +60,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="40sp"
-                android:text="@string/choose_category"
+                android:text="@string/or_choose_category"
                 android:textSize="23sp"
                 android:textColor="@android:color/black"
                 android:gravity="bottom" />
@@ -69,10 +69,8 @@
                 android:id="@+id/categories"
                 android:layout_marginTop="5sp"
                 android:layout_width="match_parent"
-                android:backgroundTint="@color/colorSecondaryAccent"
-                android:layout_height="70sp"
-                android:background="@color/colorPrimary"
-                android:dropDownWidth="wrap_content" />
+                android:layout_height="50sp"
+                style="@style/mySpinnerItemStyle" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/found_products"

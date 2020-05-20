@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -45,7 +46,18 @@ public class FindProducts extends AppCompatActivity {
         productsRecyclerView = findViewById(R.id.found_products);
         searchView = findViewById(R.id.searchView);
         categorySpinner = findViewById(R.id.categories);
-        foundProductAdapter = new FoundProductAdapter();
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String query = searchView.getQuery().toString();
+                fetchProducts(query, categories.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        foundProductAdapter = new FoundProductAdapter(this);
         foundProductAdapter.setProducts(products);
         productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         productsRecyclerView.setHasFixedSize(true);
