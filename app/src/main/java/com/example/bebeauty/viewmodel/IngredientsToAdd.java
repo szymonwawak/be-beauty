@@ -22,4 +22,8 @@ public class IngredientsToAdd extends AndroidViewModel {
     public MutableLiveData<List<Ingredient>> getIngredientsLiveData() {
         return ingredientRepository.getAllIngredients();
     }
+
+    public MutableLiveData<List<Ingredient>> filterIngredients(String query) {
+        return ingredientRepository.findIngredients(query);
+    }
 }

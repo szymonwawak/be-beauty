@@ -17,10 +17,26 @@ public class IngredientRepository {
 
     private Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
     private MutableLiveData<List<Ingredient>> ingredients = new MutableLiveData<>();
+    private ApiService apiService = retrofit.create(ApiService.class);
 
     public MutableLiveData<List<Ingredient>> getAllIngredients() {
-        ApiService apiService = retrofit.create(ApiService.class);
         Call<List<Ingredient>> call = apiService.getIngredients();
+        call.enqueue(new Callback<List<Ingredient>>() {
+                         @Override
+                         public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
+                             ingredients.setValue(response.body());
+                         }
+
+                         @Override
+                         public void onFailure(Call<List<Ingredient>> call, Throwable t) {
+                         }
+                     }
+        );
+        return ingredients;
+    }
+
+    public MutableLiveData<List<Ingredient>> findIngredients(String query) {
+        Call<List<Ingredient>> call = apiService.findIngredientsByName(query);
         call.enqueue(new Callback<List<Ingredient>>() {
                          @Override
                          public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {

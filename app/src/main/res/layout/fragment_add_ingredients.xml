@@ -5,10 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.AddIngredients"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryHint="@string/type_product_name"
+        android:background="@color/colorSecondaryAccent"
+        android:tooltipText="@string/comment_value"
+        app:iconifiedByDefault="false">
+
+    </androidx.appcompat.widget.SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/added_ingredients_recycler"
+        android:layout_below="@id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/ingredient"

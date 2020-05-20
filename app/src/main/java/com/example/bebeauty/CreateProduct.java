@@ -60,6 +60,7 @@ public class CreateProduct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         product = new Product();
+        product.setIngredients(new ArrayList<Ingredient>());
         setContentView(R.layout.activity_product_not_found);
         View view = findViewById(R.id.not_found_activity);
         setHidingMenuOnClick(view);
@@ -90,7 +91,7 @@ public class CreateProduct extends AppCompatActivity {
         addIngredientsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchToActivitiesPanel();
+                switchToIngredientsPanel();
             }
         });
         addedIngredientRecycler = view.findViewById(R.id.current_ingredients);
@@ -103,7 +104,7 @@ public class CreateProduct extends AppCompatActivity {
         });
     }
 
-    private void switchToActivitiesPanel() {
+    private void switchToIngredientsPanel() {
         FragmentManager manager = getSupportFragmentManager();
         Bundle productBundle = new Bundle();
         productBundle.putSerializable("product", product);
