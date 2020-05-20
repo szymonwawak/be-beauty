@@ -57,38 +57,43 @@
                 android:stepSize="0.5" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nickname_layout"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20sp"
                 android:layout_height="70sp"
+                android:layout_marginTop="20sp"
+                style="@style/inputStyle"
                 android:hint="@string/nick">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    style="@style/CustomInputField"
                     android:id="@+id/nickname"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:maxLength="45" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/comment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="250sp"
                 android:layout_gravity="top"
                 android:layout_marginTop="20sp"
                 android:foregroundGravity="top"
                 android:gravity="top"
-                android:hint="@string/comment_value">
+                android:hint="@string/comment_value"
+                style="@style/inputStyle"
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    style="@style/CustomInputField"
                     android:id="@+id/comment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:maxLength="300" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/send"
                 android:layout_width="150sp"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/send"
                 android:layout_gravity="end"

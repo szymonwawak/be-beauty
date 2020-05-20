@@ -10,7 +10,7 @@ public class Product implements Serializable {
     private String manufacturer;
     private String description;
     private Integer volume;
-    private Byte averageScore;
+    private Float averageScore;
     private Boolean accepted;
     private String barcode;
     private List<Comment> comments;
@@ -58,11 +58,11 @@ public class Product implements Serializable {
         this.volume = volume;
     }
 
-    public Byte getAverageScore() {
+    public Float getAverageScore() {
         return averageScore;
     }
 
-    public void setAverageScore(Byte averageScore) {
+    public void setAverageScore(Float averageScore) {
         this.averageScore = averageScore;
     }
 
