@@ -1,11 +1,6 @@
 package com.example.bebeauty;
 
 import android.Manifest;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,6 +8,10 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.bebeauty.model.Product;
 import com.example.bebeauty.repository.ProductRepository;
@@ -124,7 +123,7 @@ public class BarcodeScanner extends AppCompatActivity {
             startActivity(intent);
         } else {
             Intent intent = new Intent(BarcodeScanner.this, CreateProduct.class);
-            intent.putExtra("barcode", barcode);
+            intent.putExtra("barcode", barcode.displayValue);
             startActivity(intent);
         }
         finish();

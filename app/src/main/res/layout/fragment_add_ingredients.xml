@@ -3,38 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.AddIngredients"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
-    android:orientation="vertical">
+    tools:context=".fragment.AddIngredients">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:queryHint="@string/type_product_name"
-        android:background="@color/colorSecondaryAccent"
-        android:tooltipText="@string/comment_value"
-        app:iconifiedByDefault="false">
+        android:layout_height="match_parent">
 
-    </androidx.appcompat.widget.SearchView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/added_ingredients_recycler"
-        android:layout_below="@id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/ingredient"
-        android:clickable="true"
-        android:background="@color/colorSecondaryDark" />
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSecondaryAccent"
+                android:tooltipText="@string/comment_value"
+                app:iconifiedByDefault="false"
+                app:queryHint="@string/insert_ingredient_name">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/add_ingredients_recycler"
-        android:layout_below="@id/added_ingredients_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        tools:listitem="@layout/ingredient" />
+            </androidx.appcompat.widget.SearchView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/added_ingredients_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/searchView"
+                android:clickable="true"
+                tools:listitem="@layout/ingredient" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_ingredients_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/added_ingredients_recycler"
+                android:clickable="true"
+                tools:listitem="@layout/ingredient" />
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/confirm_adding"
@@ -42,7 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24sp"
         android:textSize="18sp"
         app:backgroundTint="@color/colorSecondary"
         app:srcCompat="@drawable/positive" />

@@ -29,8 +29,7 @@
         android:text="@string/scan_product_barcode"
         android:textSize="25sp"
         android:textColor="@android:color/black"
-        app:cornerRadius="10sp"
-
+        app:cornerRadius="5sp"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -45,6 +44,6 @@
         android:text="@string/find_product"
         android:textSize="25sp"
         android:textColor="@android:color/black"
-        app:cornerRadius="10sp"
+        app:cornerRadius="5sp"
         />
 </RelativeLayout>

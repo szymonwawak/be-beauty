@@ -1,6 +1,11 @@
 package com.example.bebeauty;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -8,11 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.example.bebeauty.adapter.IngredientsAdapter;
 import com.example.bebeauty.fragment.AddIngredients;
@@ -45,6 +45,8 @@ public class CreateProduct extends AppCompatActivity {
     IngredientsAdapter addedIngredientsAdapter;
     List<Category> categories = new ArrayList<>();
     List<Ingredient> ingredients = new ArrayList<>();
+    String foundBarcode;
+    Toast toast;
 
     public List<Ingredient> getIngredients() {
         return ingredients;
@@ -59,6 +61,7 @@ public class CreateProduct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        foundBarcode = getIntent().getStringExtra("barcode");
         product = new Product();
         product.setIngredients(new ArrayList<Ingredient>());
         setContentView(R.layout.activity_product_not_found);
@@ -86,6 +89,7 @@ public class CreateProduct extends AppCompatActivity {
         name = view.findViewById(R.id.product_name);
         description = view.findViewById(R.id.product_description);
         barcode = view.findViewById(R.id.product_barcode);
+        barcode.setText(foundBarcode);
         manufacturer = view.findViewById(R.id.product_manufacturer);
         addIngredientsButton = view.findViewById(R.id.add_ingredients);
         addIngredientsButton.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +103,7 @@ public class CreateProduct extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveProduct();
+                saveProductIfValid();
             }
         });
     }
@@ -113,15 +117,56 @@ public class CreateProduct extends AppCompatActivity {
         manager.beginTransaction().replace(R.id.fragmentsContainer, addIngredientsFragment).addToBackStack(null).commit();
     }
 
-    //TODO Validation
+    private void saveProductIfValid() {
+        if (validateProduct())
+            saveProduct();
+    }
+
+    private boolean validateProduct() {
+        String productName = name.getText().toString();
+        String productManufacturer = manufacturer.getText().toString();
+        String productBarcode = barcode.getText().toString();
+        String productDescription = description.getText().toString();
+        if (productName.isEmpty()) {
+            name.setError("Nazwa nie może być pusta!");
+            return false;
+        }
+        if (productManufacturer.isEmpty()) {
+            manufacturer.setError("Producent nie może być pusty!");
+            return false;
+        }
+        if (productBarcode.isEmpty()) {
+            barcode.setError("Kod kreskowy nie może być pusty!");
+            return false;
+        }
+        if (productDescription.isEmpty()) {
+            description.setError("Opis nie może być pusty!");
+            return false;
+        }
+        return true;
+    }
+
     private void saveProduct() {
         product.setBarcode(barcode.getText().toString());
         product.setDescription(description.getText().toString());
         product.setName(name.getText().toString());
         product.setManufacturer(manufacturer.getText().toString());
         product.setIngredients(ingredients);
+        product.setAverageScore(0.0f);
         product.setCategory((Category) categoriesSpinner.getSelectedItem());
-        productRepository.saveProduct(product);
+        productRepository.saveProduct(product).observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean success) {
+                if (success) {
+                    toast = Toast.makeText(getApplicationContext(), "Produkt został dodany!", Toast.LENGTH_LONG);
+                    toast.show();
+                    finish();
+                } else {
+                    toast = Toast.makeText(getApplicationContext(), "Nie udało się dodać produktu. Spróbuj ponownie", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
     }
 
     private void prepareCategoriesSpinner() {

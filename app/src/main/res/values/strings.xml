@@ -17,4 +17,8 @@
     <string name="nick">Nick</string>
     <string name="send">Wyślij</string>
     <string name="type_product_name">Podaj nazwę produktu:</string>
+    <string name="create_product_when_not_existing">Niestety! Nie znaleziono produktu w naszej bazie! Jeżeli chcesz, możesz go dodać</string>
+    <string name="category">Kategoria:</string>
+    <string name="ingredients">Składniki:</string>
+    <string name="insert_ingredient_name">Wprowadź nazwę składnika:</string>
 </resources>

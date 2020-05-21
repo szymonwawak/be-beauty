@@ -1,16 +1,15 @@
 package com.example.bebeauty.repository;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.bebeauty.model.Product;
 import com.example.bebeauty.service.ApiService;
 import com.example.bebeauty.utils.RetrofitInstance;
-import com.google.android.gms.common.api.Api;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,6 +19,7 @@ public class ProductRepository {
 
     private Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
     private ApiService apiService = retrofit.create(ApiService.class);
+    MutableLiveData<Boolean> requestSuccess = new MutableLiveData<>();
 
     public List<Product> getAllProducts() {
         final List<Product> products = new ArrayList<Product>();
@@ -49,17 +49,20 @@ public class ProductRepository {
         return product;
     }
 
-    public void saveProduct(Product product) {
+    public MutableLiveData<Boolean> saveProduct(Product product) {
         Call<Product> call = apiService.saveProduct(product);
         call.enqueue(new Callback<Product>() {
                          @Override
                          public void onResponse(Call<Product> call, Response<Product> response) {
+                             requestSuccess.setValue(true);
                          }
 
                          @Override
                          public void onFailure(Call<Product> call, Throwable t) {
+                             requestSuccess.setValue(false);
                          }
                      }
         );
+        return requestSuccess;
     }
 }
