@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_create_ingredient"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSecondaryAccent"
+    android:orientation="vertical"
+    android:padding="25sp"
+    tools:context=".CreateIngredient">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="3sp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10sp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/create_ingredient"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="25sp" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/ingredientDataContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="3sp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            tools:context=".CreateProduct">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_layout"
+                style="@style/inputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="70sp"
+                android:layout_marginTop="20sp"
+                android:hint="@string/name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="45" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:background="@color/colorPrimary"
+                android:gravity="bottom"
+                android:text="@string/effect"
+                android:textColor="@android:color/black"
+                android:textSize="23sp" />
+
+            <Spinner
+                android:id="@+id/effect"
+                style="@style/mySpinnerItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:layout_marginTop="10sp"
+                android:dropDownWidth="wrap_content" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/description_layout"
+                style="@style/inputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="250sp"
+                android:layout_gravity="top"
+                android:layout_marginTop="20sp"
+                android:foregroundGravity="top"
+                android:gravity="top"
+                android:hint="@string/product_description"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLength="300" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/create"
+                android:layout_width="150sp"
+                android:layout_height="60dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:text="@string/create"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                app:backgroundTint="@color/colorSecondaryDark" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

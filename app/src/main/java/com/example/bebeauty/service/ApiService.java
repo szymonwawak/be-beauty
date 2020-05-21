@@ -35,6 +35,9 @@ public interface ApiService {
     @GET("ingredients")
     Call<List<Ingredient>> getIngredients();
 
+    @POST("ingredients")
+    Call<Ingredient> saveIngredient(@Body Ingredient ingredient);
+    
     @POST("ingredients/findByName")
     Call<List<Ingredient>> findIngredientsByName(@Body String name);
 

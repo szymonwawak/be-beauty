@@ -17,6 +17,7 @@ public class IngredientRepository {
 
     private Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
     private MutableLiveData<List<Ingredient>> ingredients = new MutableLiveData<>();
+    private MutableLiveData<Boolean> requestSuccess = new MutableLiveData<>();
     private ApiService apiService = retrofit.create(ApiService.class);
 
     public MutableLiveData<List<Ingredient>> getAllIngredients() {
@@ -49,5 +50,22 @@ public class IngredientRepository {
                      }
         );
         return ingredients;
+    }
+
+    public MutableLiveData<Boolean> saveIngredient(Ingredient ingredient) {
+        Call<Ingredient> call = apiService.saveIngredient(ingredient);
+        call.enqueue(new Callback<Ingredient>() {
+                         @Override
+                         public void onResponse(Call<Ingredient> call, Response<Ingredient> response) {
+                             requestSuccess.setValue(response.isSuccessful());
+                         }
+
+                         @Override
+                         public void onFailure(Call<Ingredient> call, Throwable t) {
+                             requestSuccess.setValue(true);
+                         }
+                     }
+        );
+        return requestSuccess;
     }
 }
