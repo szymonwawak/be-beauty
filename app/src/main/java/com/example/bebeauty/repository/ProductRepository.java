@@ -65,4 +65,21 @@ public class ProductRepository {
         );
         return requestSuccess;
     }
+
+    public MutableLiveData<Boolean> updateProduct(Product product) {
+        Call<Product> call = apiService.updateProduct(product);
+        call.enqueue(new Callback<Product>() {
+                         @Override
+                         public void onResponse(Call<Product> call, Response<Product> response) {
+                             requestSuccess.setValue(true);
+                         }
+
+                         @Override
+                         public void onFailure(Call<Product> call, Throwable t) {
+                             requestSuccess.setValue(false);
+                         }
+                     }
+        );
+        return requestSuccess;
+    }
 }

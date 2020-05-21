@@ -21,4 +21,16 @@
     <string name="category">Kategoria:</string>
     <string name="ingredients">Składniki:</string>
     <string name="insert_ingredient_name">Wprowadź nazwę składnika:</string>
+    <string name="create_ingredient">Dodaj nowy składnik</string>
+    <string name="name">Nazwa</string>
+    <string name="create">Stwórz</string>
+    <string name="effect">Działanie:</string>
+    <string name="edit">Edytuj</string>
+    <string name="edit_product">Edytuj produkt</string>
+
+    <string-array name="effects">
+        <item>Neutralny</item>
+        <item>Pozytywny</item>
+        <item>Negatywny</item>
+    </string-array>
 </resources>

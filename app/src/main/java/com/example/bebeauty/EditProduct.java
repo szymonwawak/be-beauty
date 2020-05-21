@@ -27,7 +27,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateProduct extends ProductOperations {
+public class EditProduct extends ProductOperations {
 
     MaterialButton addIngredientsButton;
     MaterialButton saveButton;
@@ -42,6 +42,7 @@ public class CreateProduct extends ProductOperations {
     ArrayAdapter<Category> adapter;
     RecyclerView addedIngredientRecycler;
     List<Category> categories = new ArrayList<>();
+    List<Ingredient> ingredients = new ArrayList<>();
     String foundBarcode;
     Toast toast;
 
@@ -49,12 +50,10 @@ public class CreateProduct extends ProductOperations {
         return ingredients;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        foundBarcode = getIntent().getStringExtra("barcode");
-        product = new Product();
+        product = (Product) getIntent().getSerializableExtra("product");
         product.setIngredients(new ArrayList<Ingredient>());
         setContentView(R.layout.activity_product_not_found);
         View view = findViewById(R.id.not_found_activity);
@@ -69,7 +68,7 @@ public class CreateProduct extends ProductOperations {
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Utils.hideKeyboard(CreateProduct.this);
+                Utils.hideKeyboard(EditProduct.this);
                 return false;
             }
         });
@@ -79,10 +78,13 @@ public class CreateProduct extends ProductOperations {
         viewModel = new ViewModelProvider(this).get(CreateProductModel.class);
         categoriesSpinner = view.findViewById(R.id.categories);
         name = view.findViewById(R.id.product_name);
+        name.setText(product.getName());
         description = view.findViewById(R.id.product_description);
+        description.setText(product.getDescription());
         barcode = view.findViewById(R.id.product_barcode);
-        barcode.setText(foundBarcode);
+        barcode.setText(product.getBarcode());
         manufacturer = view.findViewById(R.id.product_manufacturer);
+        manufacturer.setText(product.getManufacturer());
         addIngredientsButton = view.findViewById(R.id.add_ingredients);
         addIngredientsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,9 +146,9 @@ public class CreateProduct extends ProductOperations {
         product.setName(name.getText().toString());
         product.setManufacturer(manufacturer.getText().toString());
         product.setIngredients(ingredients);
-        product.setAverageScore(0.0f);
+        product.setAverageScore(product.getAverageScore());
         product.setCategory((Category) categoriesSpinner.getSelectedItem());
-        productRepository.saveProduct(product).observe(this, new Observer<Boolean>() {
+        productRepository.updateProduct(product).observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean success) {
                 if (success) {
@@ -179,6 +181,7 @@ public class CreateProduct extends ProductOperations {
 
     private void initIngredientsRecycler() {
         addedIngredientsAdapter = new IngredientsAdapter();
+        ingredients = product.getIngredients();
         addedIngredientsAdapter.setIngredients(ingredients);
         addedIngredientRecycler.setLayoutManager(new LinearLayoutManager(this));
         addedIngredientRecycler.setHasFixedSize(true);

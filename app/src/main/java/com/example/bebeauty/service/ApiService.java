@@ -13,6 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 
 public interface ApiService {
@@ -29,6 +30,9 @@ public interface ApiService {
     @POST("products")
     Call<Product> saveProduct(@Body Product product);
 
+    @PUT("products")
+    Call<Product> updateProduct(@Body Product product);
+
     @GET("categories")
     Call<List<Category>> getCategories();
 
@@ -37,7 +41,7 @@ public interface ApiService {
 
     @POST("ingredients")
     Call<Ingredient> saveIngredient(@Body Ingredient ingredient);
-    
+
     @POST("ingredients/findByName")
     Call<List<Ingredient>> findIngredientsByName(@Body String name);
 

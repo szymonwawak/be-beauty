@@ -3,6 +3,9 @@ package com.example.bebeauty.fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -11,11 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.example.bebeauty.CreateProduct;
+import com.example.bebeauty.ProductOperations;
 import com.example.bebeauty.R;
 import com.example.bebeauty.adapter.AddedIngredientsAdapter;
 import com.example.bebeauty.adapter.IngredientsToAddAdapter;
@@ -72,7 +71,7 @@ public class AddIngredients extends Fragment {
     }
 
     private void addChosenIngredients() {
-        CreateProduct activity = ((CreateProduct) getActivity());
+        ProductOperations activity = ((ProductOperations) getActivity());
         activity.setIngredients(addedIngredientList);
         getParentFragmentManager().popBackStack();
     }

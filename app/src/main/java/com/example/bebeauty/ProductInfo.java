@@ -1,19 +1,20 @@
 package com.example.bebeauty;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.bebeauty.fragment.ProductComments;
 import com.example.bebeauty.fragment.ProductData;
 import com.example.bebeauty.fragment.ProductIngredients;
 import com.example.bebeauty.model.Product;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ProductInfo extends AppCompatActivity {
 
@@ -22,6 +23,7 @@ public class ProductInfo extends AppCompatActivity {
     Button dataButton;
     Button commentsButton;
     Button ingredientsButton;
+    FloatingActionButton editProductButton;
     ExtendedFloatingActionButton addCommentButton;
 
     @Override
@@ -51,6 +53,7 @@ public class ProductInfo extends AppCompatActivity {
         setCommentButtonListener();
         setIngredientButtonListener();
         setAddCommentButtonListener();
+        setEditProductButtonListener();
     }
 
     private void setDataButtonListener() {
@@ -107,6 +110,18 @@ public class ProductInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProductInfo.this, AddComment.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setEditProductButtonListener() {
+        editProductButton = findViewById(R.id.edit_product_button);
+        editProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductInfo.this, EditProduct.class);
                 intent.putExtra("product", product);
                 startActivity(intent);
             }

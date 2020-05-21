@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_edit_product"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSecondaryAccent"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="20sp"
+    tools:context=".EditProduct">
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="5sp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10sp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/edit_product"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/fragmentsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="5sp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10sp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                tools:context=".CreateProduct">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/inputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="70sp"
+                    android:hint="@string/product_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/product_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/inputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="70sp"
+                    android:hint="@string/product_manufacturer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/product_manufacturer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/inputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="70sp"
+                    android:hint="@string/barcode">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/product_barcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/inputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="70sp"
+                    android:hint="@string/product_description">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/product_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:background="@color/colorSecondaryAccent"
+                    android:gravity="bottom"
+                    android:text="@string/category"
+                    android:textColor="@android:color/black"
+                    android:textSize="23sp" />
+
+                <Spinner
+                    android:id="@+id/categories"
+                    style="@style/mySpinnerItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="50sp"
+                    android:dropDownWidth="wrap_content" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:background="@color/colorAccent"
+                    android:gravity="bottom"
+                    android:text="@string/ingredients"
+                    android:textColor="@android:color/black"
+                    android:textSize="23sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/current_ingredients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:clickable="true"
+                        android:maxHeight="200sp"
+                        tools:listitem="@layout/ingredient" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAccent">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/add_ingredients"
+                        android:layout_width="wrap_content"
+                        android:padding="10sp"
+                        android:layout_height="60sp"
+                        android:text="@string/add_ingredients"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="@color/colorPrimaryDark" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/create_product"
+                        android:layout_width="wrap_content"
+                        android:padding="10sp"
+                        android:layout_height="60sp"
+                        android:text="@string/save_product"
+                        android:textColor="@android:color/white"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@id/add_ingredients"
+                        app:backgroundTint="@color/colorSecondaryDark" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
