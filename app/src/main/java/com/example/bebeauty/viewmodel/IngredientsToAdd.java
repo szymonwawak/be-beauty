@@ -23,7 +23,7 @@ public class IngredientsToAdd extends AndroidViewModel {
         return ingredientRepository.getAllIngredients();
     }
 
-    public MutableLiveData<List<Ingredient>> filterIngredients(String query) {
-        return ingredientRepository.findIngredients(query);
+    public MutableLiveData<List<Ingredient>> filterIngredients(String query, int pageNumber, int pageSize) {
+        return ingredientRepository.findIngredients(query, pageNumber, pageSize);
     }
 }

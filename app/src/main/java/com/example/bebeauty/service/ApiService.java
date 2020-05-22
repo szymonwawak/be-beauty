@@ -25,7 +25,7 @@ public interface ApiService {
 
     @Multipart
     @POST("products/filterProducts")
-    Call<List<Product>> filterProducts(@Part("name") String name, @Part("category") Category category);
+    Call<List<Product>> filterProducts(@Part("name") String name, @Part("category") Category category, @Part("pageNumber") int pageNumber, @Part("pageSize") int pageSize);
 
     @POST("products")
     Call<Product> saveProduct(@Body Product product);
@@ -42,8 +42,9 @@ public interface ApiService {
     @POST("ingredients")
     Call<Ingredient> saveIngredient(@Body Ingredient ingredient);
 
+    @Multipart
     @POST("ingredients/findByName")
-    Call<List<Ingredient>> findIngredientsByName(@Body String name);
+    Call<List<Ingredient>> findIngredientsByName(@Part("name") String name, @Part("pageNumber") int pageNumber, @Part("pageSize") int pageSize);
 
     @POST("comments")
     Call<Comment> saveComment(@Body Comment comment);

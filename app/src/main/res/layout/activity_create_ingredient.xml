@@ -58,7 +58,8 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxLength="45" />
+                    android:maxLength="45"
+                    android:gravity="top" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
@@ -68,7 +69,7 @@
                 android:gravity="bottom"
                 android:text="@string/effect"
                 android:textColor="@android:color/black"
-                android:textSize="23sp" />
+                android:textSize="18sp" />
 
             <Spinner
                 android:id="@+id/effect"
@@ -94,7 +95,8 @@
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxLength="300" />
+                    android:maxLength="300"
+                    android:gravity="top" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -105,7 +107,8 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/create"
                 android:textColor="@android:color/black"
-                android:textSize="22sp"
+                android:textSize="20sp"
+
                 app:backgroundTint="@color/colorSecondaryDark" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

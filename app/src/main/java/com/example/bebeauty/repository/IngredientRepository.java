@@ -36,8 +36,8 @@ public class IngredientRepository {
         return ingredients;
     }
 
-    public MutableLiveData<List<Ingredient>> findIngredients(String query) {
-        Call<List<Ingredient>> call = apiService.findIngredientsByName(query);
+    public MutableLiveData<List<Ingredient>> findIngredients(String query, int pageNumber, int pageSize) {
+        Call<List<Ingredient>> call = apiService.findIngredientsByName(query, pageNumber, pageSize);
         call.enqueue(new Callback<List<Ingredient>>() {
                          @Override
                          public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {

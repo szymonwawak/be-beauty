@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -40,6 +41,13 @@ public class AddIngredients extends Fragment {
     RecyclerView ingredientRecycler;
     private FloatingActionButton confirm;
     SearchView searchView;
+    private final int PAGE_SIZE = 6;
+    int visibleItemCount;
+    int totalItemCount;
+    boolean isLoading = false;
+    boolean isLastPage;
+    int firstVisibleItemPosition;
+    int currentPageNumber = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +56,8 @@ public class AddIngredients extends Fragment {
         Product product = (Product) getArguments().getSerializable("product");
         addedIngredientList = product.getIngredients();
         initFragment(view);
-        loadIngredients();
+        currentPageNumber = 0;
+        fetchIngredients("", true);
         initRecyclers();
         initSearchView();
         return view;
@@ -76,20 +85,15 @@ public class AddIngredients extends Fragment {
         getParentFragmentManager().popBackStack();
     }
 
-    private void loadIngredients() {
-        ingredientsToAdd.getIngredientsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Ingredient>>() {
+    private void fetchIngredients(String query, boolean clear) {
+        isLoading = true;
+        ingredientsToAdd.filterIngredients(query, currentPageNumber, PAGE_SIZE).observe(getViewLifecycleOwner(), new Observer<List<Ingredient>>() {
             @Override
             public void onChanged(List<Ingredient> ingredients) {
-                addLoadedIngredients(ingredients);
-            }
-        });
-    }
-
-    private void fetchIngredients(String query) {
-        ingredientsToAdd.filterIngredients(query).observe(getViewLifecycleOwner(), new Observer<List<Ingredient>>() {
-            @Override
-            public void onChanged(List<Ingredient> ingredients) {
-                addLoadedIngredients(ingredients);
+                isLastPage = false;
+                if (ingredients.size() > PAGE_SIZE)
+                    isLastPage = true;
+                addLoadedIngredients(ingredients, clear);
             }
         });
     }
@@ -102,9 +106,28 @@ public class AddIngredients extends Fragment {
     }
 
     private void initIngredientRecycler(RecyclerView commentRecycler, IngredientsToAddAdapter adapter) {
-        commentRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        commentRecycler.setLayoutManager(layoutManager);
         commentRecycler.setHasFixedSize(true);
         commentRecycler.setAdapter(adapter);
+        commentRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                visibleItemCount = layoutManager.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= PAGE_SIZE) {
+                        String query = searchView.getQuery().toString();
+                        fetchIngredients(query, false);
+                    }
+                }
+            }
+        });
     }
 
     private void initAddedIngredientsRecycler(RecyclerView addedIngredientRecycler, AddedIngredientsAdapter adapter) {
@@ -124,11 +147,14 @@ public class AddIngredients extends Fragment {
         ingredientsToAddAdapter.notifyDataSetChanged();
     }
 
-    private void addLoadedIngredients(List<Ingredient> ingredients) {
-        ingredientList.clear();
+    private void addLoadedIngredients(List<Ingredient> ingredients, boolean clear) {
+        if (clear)
+            ingredientList.clear();
+        currentPageNumber++;
         ingredientList.addAll(ingredients);
         removeAlreadyContainedRecords(ingredientList, addedIngredientList);
         ingredientsToAddAdapter.notifyDataSetChanged();
+        isLoading = false;
     }
 
     private void removeAlreadyContainedRecords(List<Ingredient> itemsToChoose, List<Ingredient> alreadyChosenItems) {
@@ -149,13 +175,15 @@ public class AddIngredients extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                fetchIngredients(query);
+                currentPageNumber = 0;
+                fetchIngredients(query, true);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                fetchIngredients(newText);
+                currentPageNumber = 0;
+                fetchIngredients(newText, true);
                 return false;
             }
         });

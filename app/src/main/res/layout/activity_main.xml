@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:paddingLeft="40sp"
+    android:paddingRight="40sp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/appName"
@@ -11,23 +13,23 @@
         android:layout_height="160dp"
         android:layout_marginTop="60dp"
         android:fontFamily="@font/vegan_style"
-        android:padding="20dp"
         android:text="@string/app_name"
         android:textAlignment="center"
         android:textFontWeight="400"
-        android:textSize="60sp" />
+        android:textSize="60sp"
+        android:gravity="center" />
 
     <com.google.android.material.button.MaterialButton
+        android:layout_marginTop="60sp"
         android:id="@+id/scan_barcode"
         android:padding="10dp"
-        android:layout_margin="40dp"
         android:layout_width="400dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/appName"
         android:backgroundTint="@color/colorSecondaryAccent"
         android:text="@string/scan_product_barcode"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textColor="@android:color/black"
         app:cornerRadius="5sp"
         />
@@ -35,14 +37,13 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/find_product"
         android:padding="10dp"
-        android:layout_margin="40dp"
         android:layout_width="400dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/scan_barcode"
         android:backgroundTint="@color/colorSecondaryAccent"
         android:text="@string/find_product"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textColor="@android:color/black"
         app:cornerRadius="5sp"
         />
@@ -50,14 +51,13 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/create_ingredient"
         android:padding="10dp"
-        android:layout_margin="40dp"
         android:layout_width="400dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/find_product"
         android:backgroundTint="@color/colorSecondaryAccent"
         android:text="@string/create_ingredient"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textColor="@android:color/black"
         app:cornerRadius="5sp" />
 </RelativeLayout>

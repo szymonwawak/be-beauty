@@ -68,6 +68,7 @@
                     android:id="@+id/nickname"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="top"
                     android:maxLength="45" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,6 +88,7 @@
                     android:id="@+id/comment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="top"
                     android:maxLength="300" />
             </com.google.android.material.textfield.TextInputLayout>
 

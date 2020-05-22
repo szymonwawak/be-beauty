@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorAccent"
     tools:context=".fragment.AddIngredients">
 
     <ScrollView
@@ -31,7 +31,7 @@
                 android:id="@+id/added_ingredients_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/searchView"
+                android:background="@color/colorPrimaryDark"
                 android:clickable="true"
                 tools:listitem="@layout/ingredient" />
 
@@ -39,7 +39,6 @@
                 android:id="@+id/add_ingredients_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/added_ingredients_recycler"
                 android:clickable="true"
                 tools:listitem="@layout/ingredient" />
         </LinearLayout>
@@ -51,10 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24sp"
-        android:textSize="18sp"
+        android:layout_margin="24sp"
         app:backgroundTint="@color/colorSecondary"
-        app:srcCompat="@drawable/positive" />
+        android:src="@drawable/check" />
 
 </RelativeLayout>
