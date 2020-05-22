@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bebeauty.fragment.AddIngredients;
 import com.example.bebeauty.R;
+import com.example.bebeauty.fragment.AddIngredients;
 import com.example.bebeauty.model.Ingredient;
 
 import java.util.ArrayList;
@@ -25,11 +25,16 @@ public class IngredientsToAddAdapter extends RecyclerView.Adapter<IngredientsToA
         this.parentContext = parentContext;
     }
 
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+
     @NonNull
     @Override
     public IngredientHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient, parent, false);
-        return new IngredientsToAddAdapter.IngredientHolder(itemView);
+        return new IngredientHolder(itemView);
     }
 
     @Override
@@ -45,7 +50,7 @@ public class IngredientsToAddAdapter extends RecyclerView.Adapter<IngredientsToA
         return ingredients.size();
     }
 
-    private void setEffect(@NonNull IngredientsToAddAdapter.IngredientHolder holder, String effect) {
+    public void setEffect(@NonNull IngredientsToAddAdapter.IngredientHolder holder, String effect) {
         switch (effect) {
             case "positive": {
                 holder.effect.setImageResource(R.drawable.positive);
@@ -62,16 +67,12 @@ public class IngredientsToAddAdapter extends RecyclerView.Adapter<IngredientsToA
         }
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    class IngredientHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class IngredientHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView name;
         private ImageView effect;
         private TextView description;
 
-        public IngredientHolder(@NonNull View itemView) {
+        IngredientHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             effect = itemView.findViewById(R.id.effect);

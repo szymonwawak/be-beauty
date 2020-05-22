@@ -10,18 +10,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bebeauty.ProductOperations;
 import com.example.bebeauty.R;
+import com.example.bebeauty.activity.ProductOperations;
 import com.example.bebeauty.adapter.AddedIngredientsAdapter;
 import com.example.bebeauty.adapter.IngredientsToAddAdapter;
 import com.example.bebeauty.model.Ingredient;
 import com.example.bebeauty.model.Product;
-import com.example.bebeauty.viewmodel.IngredientsToAdd;
+import com.example.bebeauty.repository.IngredientRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -31,120 +29,65 @@ import java.util.List;
 
 public class AddIngredients extends Fragment {
 
-    private List<Ingredient> ingredientList = new ArrayList<>();
-    private List<Ingredient> addedIngredientList;
-    private IngredientsToAdd ingredientsToAdd;
+    private View view;
+    private Product product;
+    private List<Ingredient> ingredientList;
+    private List<Ingredient> storedIngredients;
     private IngredientsToAddAdapter ingredientsToAddAdapter;
     private AddedIngredientsAdapter addedIngredientsAdapter;
-    private SearchManager searchManager;
-    RecyclerView addedIngredientRecycler;
-    RecyclerView ingredientRecycler;
-    private FloatingActionButton confirm;
-    SearchView searchView;
+    private RecyclerView addedIngredientRecycler;
+    private RecyclerView ingredientRecycler;
+    private SearchView searchView;
+    private IngredientRepository ingredientRepository;
     private final int PAGE_SIZE = 6;
-    int visibleItemCount;
-    int totalItemCount;
-    boolean isLoading = false;
-    boolean isLastPage;
-    int firstVisibleItemPosition;
-    int currentPageNumber = 0;
+    private int visibleItemsCount;
+    private int totalItemsCount;
+    private boolean isLoading;
+    private boolean isLastPage;
+    private int firstVisibleItemPosition;
+    private int currentPageNumber;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_ingredients, container, false);
-        Product product = (Product) getArguments().getSerializable("product");
-        addedIngredientList = product.getIngredients();
-        initFragment(view);
-        currentPageNumber = 0;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_add_ingredients, container, false);
+        product = (Product) getArguments().getSerializable("product");
+        initFragment();
+        initAdapters();
         fetchIngredients("", true);
         initRecyclers();
         initSearchView();
         return view;
     }
 
-    private void initFragment(View view) {
-        confirm = view.findViewById(R.id.confirm_adding);
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addChosenIngredients();
-            }
-        });
+    private void initFragment() {
+        ingredientRepository = new IngredientRepository();
+        ingredientList = new ArrayList<>();
+        storedIngredients = product.getIngredients();
         searchView = view.findViewById(R.id.searchView);
         addedIngredientRecycler = view.findViewById(R.id.added_ingredients_recycler);
         ingredientRecycler = view.findViewById(R.id.add_ingredients_recycler);
-        ingredientsToAddAdapter = new IngredientsToAddAdapter(this);
-        addedIngredientsAdapter = new AddedIngredientsAdapter(this);
-        ingredientsToAdd = new ViewModelProvider(this).get(IngredientsToAdd.class);
+        FloatingActionButton confirm = view.findViewById(R.id.confirm_adding);
+        confirm.setOnClickListener(v -> addChosenIngredients());
+        currentPageNumber = 0;
     }
 
     private void addChosenIngredients() {
         ProductOperations activity = ((ProductOperations) getActivity());
-        activity.setIngredients(addedIngredientList);
+        activity.setIngredients(storedIngredients);
         getParentFragmentManager().popBackStack();
+    }
+
+    private void initAdapters() {
+        ingredientsToAddAdapter = new IngredientsToAddAdapter(this);
+        addedIngredientsAdapter = new AddedIngredientsAdapter(this);
     }
 
     private void fetchIngredients(String query, boolean clear) {
         isLoading = true;
-        ingredientsToAdd.filterIngredients(query, currentPageNumber, PAGE_SIZE).observe(getViewLifecycleOwner(), new Observer<List<Ingredient>>() {
-            @Override
-            public void onChanged(List<Ingredient> ingredients) {
-                isLastPage = false;
-                if (ingredients.size() > PAGE_SIZE)
-                    isLastPage = true;
-                addLoadedIngredients(ingredients, clear);
-            }
+        ingredientRepository.findIngredients(query, currentPageNumber, PAGE_SIZE).observe(getViewLifecycleOwner(), ingredients -> {
+            isLastPage = ingredients.size() < PAGE_SIZE;
+            addLoadedIngredients(ingredients, clear);
         });
-    }
-
-    private void initRecyclers() {
-        ingredientsToAddAdapter.setIngredients(ingredientList);
-        addedIngredientsAdapter.setIngredients(addedIngredientList);
-        initIngredientRecycler(ingredientRecycler, ingredientsToAddAdapter);
-        initAddedIngredientsRecycler(addedIngredientRecycler, addedIngredientsAdapter);
-    }
-
-    private void initIngredientRecycler(RecyclerView commentRecycler, IngredientsToAddAdapter adapter) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
-        commentRecycler.setLayoutManager(layoutManager);
-        commentRecycler.setHasFixedSize(true);
-        commentRecycler.setAdapter(adapter);
-        commentRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                visibleItemCount = layoutManager.getChildCount();
-                totalItemCount = layoutManager.getItemCount();
-                firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
-                if (!isLoading && !isLastPage) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                            && totalItemCount >= PAGE_SIZE) {
-                        String query = searchView.getQuery().toString();
-                        fetchIngredients(query, false);
-                    }
-                }
-            }
-        });
-    }
-
-    private void initAddedIngredientsRecycler(RecyclerView addedIngredientRecycler, AddedIngredientsAdapter adapter) {
-        addedIngredientRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        addedIngredientRecycler.setHasFixedSize(true);
-        addedIngredientRecycler.setAdapter(adapter);
-    }
-
-
-    public void addIngredientToList(Ingredient ingredient) {
-        addedIngredientList.add(ingredient);
-        addedIngredientsAdapter.notifyDataSetChanged();
-    }
-
-    public void removeIngredientFromList(Ingredient ingredient) {
-        ingredientList.add(ingredient);
-        ingredientsToAddAdapter.notifyDataSetChanged();
     }
 
     private void addLoadedIngredients(List<Ingredient> ingredients, boolean clear) {
@@ -152,7 +95,7 @@ public class AddIngredients extends Fragment {
             ingredientList.clear();
         currentPageNumber++;
         ingredientList.addAll(ingredients);
-        removeAlreadyContainedRecords(ingredientList, addedIngredientList);
+        removeAlreadyContainedRecords(ingredientList, storedIngredients);
         ingredientsToAddAdapter.notifyDataSetChanged();
         isLoading = false;
     }
@@ -161,17 +104,56 @@ public class AddIngredients extends Fragment {
         Iterator<Ingredient> iterator = itemsToChoose.iterator();
         while (iterator.hasNext()) {
             final Ingredient ingredient = iterator.next();
-            if (alreadyChosenItems.stream().filter(it -> it.getId() == ingredient.getId()).findFirst().isPresent()) {
+            if (alreadyChosenItems.stream().anyMatch(it -> it.getId() == ingredient.getId())) {
                 iterator.remove();
             }
         }
     }
 
+    private void initRecyclers() {
+        ingredientsToAddAdapter.setIngredients(ingredientList);
+        addedIngredientsAdapter.setIngredients(storedIngredients);
+        initIngredientRecycler();
+        initStoreIngredientsRecycler();
+    }
+
+    private void initIngredientRecycler() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        ingredientRecycler.setLayoutManager(layoutManager);
+        ingredientRecycler.setHasFixedSize(true);
+        ingredientRecycler.setAdapter(ingredientsToAddAdapter);
+        ingredientRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                AddIngredients.this.loadIfNeededAndPossible(layoutManager);
+            }
+        });
+    }
+
+    private void loadIfNeededAndPossible(LinearLayoutManager layoutManager) {
+        visibleItemsCount = layoutManager.getChildCount();
+        totalItemsCount = layoutManager.getItemCount();
+        firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+        if (!isLoading && !isLastPage && needsLoading()) {
+            String query = searchView.getQuery().toString();
+            fetchIngredients(query, false);
+        }
+    }
+
+    private boolean needsLoading() {
+        return (visibleItemsCount + firstVisibleItemPosition) >= totalItemsCount && firstVisibleItemPosition >= 0 && totalItemsCount >= PAGE_SIZE;
+    }
+
+    private void initStoreIngredientsRecycler() {
+        addedIngredientRecycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        addedIngredientRecycler.setHasFixedSize(true);
+        addedIngredientRecycler.setAdapter(addedIngredientsAdapter);
+    }
+
     private void initSearchView() {
-        searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getActivity().getComponentName())
-        );
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -187,5 +169,15 @@ public class AddIngredients extends Fragment {
                 return false;
             }
         });
+    }
+
+    public void addIngredientToList(Ingredient ingredient) {
+        storedIngredients.add(ingredient);
+        addedIngredientsAdapter.notifyDataSetChanged();
+    }
+
+    public void removeIngredientFromList(Ingredient ingredient) {
+        ingredientList.add(ingredient);
+        ingredientsToAddAdapter.notifyDataSetChanged();
     }
 }

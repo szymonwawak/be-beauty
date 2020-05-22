@@ -1,4 +1,4 @@
-package com.example.bebeauty;
+package com.example.bebeauty.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.bebeauty.R;
 import com.example.bebeauty.model.Product;
 import com.example.bebeauty.repository.ProductRepository;
 import com.google.android.gms.vision.CameraSource;
@@ -41,21 +42,6 @@ public class BarcodeScanner extends AppCompatActivity {
     private void initSources() {
         surfaceView = findViewById(R.id.surfaceView);
         productRepository = new ProductRepository();
-    }
-
-    private void checkPermissions() throws IOException {
-        if (hasPermissions()) {
-            cameraSource.start(surfaceView.getHolder());
-            Toast toast = Toast.makeText(getApplicationContext(), "Nakieruj kamerę na kod kreskowy", Toast.LENGTH_LONG);
-            toast.show();
-        } else {
-            ActivityCompat.requestPermissions(BarcodeScanner.this,
-                    new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-        }
-    }
-
-    private boolean hasPermissions() {
-        return ActivityCompat.checkSelfPermission(BarcodeScanner.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void initScanner() {
@@ -89,12 +75,35 @@ public class BarcodeScanner extends AppCompatActivity {
         };
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            runIfPermissionGranted();
+        else
+            finish();
+    }
+
     private void runIfPermissionGranted() {
         try {
             checkPermissions();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void checkPermissions() throws IOException {
+        if (hasPermissions()) {
+            cameraSource.start(surfaceView.getHolder());
+            Toast toast = Toast.makeText(getApplicationContext(), "Nakieruj kamerę na kod kreskowy", Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            ActivityCompat.requestPermissions(BarcodeScanner.this,
+                    new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+        }
+    }
+
+    private boolean hasPermissions() {
+        return ActivityCompat.checkSelfPermission(BarcodeScanner.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     private Detector.Processor<Barcode> getDetector() {
@@ -118,22 +127,22 @@ public class BarcodeScanner extends AppCompatActivity {
         barcodeDetector.release();
         Product product = productRepository.getProductByBarcode(barcode.displayValue);
         if (product != null) {
-            Intent intent = new Intent(BarcodeScanner.this, ProductInfo.class);
-            intent.putExtra("product", product);
-            startActivity(intent);
+            showProductInfo(product);
         } else {
-            Intent intent = new Intent(BarcodeScanner.this, CreateProduct.class);
-            intent.putExtra("barcode", barcode.displayValue);
-            startActivity(intent);
+            proposeCreatingNewProduct(barcode);
         }
         finish();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            runIfPermissionGranted();
-        else
-            finish();
+    private void showProductInfo(Product product) {
+        Intent intent = new Intent(BarcodeScanner.this, ProductInfo.class);
+        intent.putExtra("product", product);
+        startActivity(intent);
+    }
+
+    private void proposeCreatingNewProduct(Barcode barcode) {
+        Intent intent = new Intent(BarcodeScanner.this, CreateProduct.class);
+        intent.putExtra("barcode", barcode.displayValue);
+        startActivity(intent);
     }
 }

@@ -19,6 +19,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
     private List<Comment> comments = new ArrayList();
 
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @NonNull
     @Override
     public CommentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -27,19 +31,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentHolder holder, int position) {
-        Comment comment = comments.get(position);
-        holder.score.setRating(comment.getScore());
-        holder.comment.setText(comment.getOpinion());
-    }
-
-    @Override
     public int getItemCount() {
         return comments.size();
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    @Override
+    public void onBindViewHolder(@NonNull CommentHolder holder, int position) {
+        Comment comment = comments.get(position);
+        holder.score.setRating(comment.getScore());
+        holder.comment.setText(comment.getOpinion());
     }
 
     class CommentHolder extends RecyclerView.ViewHolder {

@@ -1,9 +1,8 @@
-package com.example.bebeauty;
+package com.example.bebeauty.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,11 +14,13 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bebeauty.adapter.FoundProductAdapter;
+import com.example.bebeauty.R;
+import com.example.bebeauty.adapter.ProductsAdapter;
 import com.example.bebeauty.model.Category;
 import com.example.bebeauty.model.Product;
+import com.example.bebeauty.repository.ProductRepository;
 import com.example.bebeauty.service.ApiService;
-import com.example.bebeauty.utils.RetrofitInstance;
+import com.example.bebeauty.utils.RetrofitBuilder;
 import com.example.bebeauty.utils.Utils;
 
 import java.util.ArrayList;
@@ -32,8 +33,9 @@ import retrofit2.Retrofit;
 
 public class FindProducts extends AppCompatActivity {
     private RecyclerView productsRecyclerView;
-    private FoundProductAdapter foundProductAdapter;
+    private ProductsAdapter productsAdapter;
     private SearchView searchView;
+    View view;
     private SearchManager searchManager;
     private Spinner categorySpinner;
     private List<Category> categories = new ArrayList<>();
@@ -51,7 +53,17 @@ public class FindProducts extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initFields();
+        initProductRecycler();
+        initSearchView();
+        prepareCategoriesSpinner();
+        loadCategories();
+        Utils.setHidingMenuOnClick(view, FindProducts.this);
+    }
+
+    private void initFields() {
         setContentView(R.layout.activity_find_products);
+        view = findViewById(R.id.activity_find_products);
         productsRecyclerView = findViewById(R.id.found_products);
         searchView = findViewById(R.id.searchView);
         categorySpinner = findViewById(R.id.categories);
@@ -67,38 +79,16 @@ public class FindProducts extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        foundProductAdapter = new FoundProductAdapter(this);
-        foundProductAdapter.setProducts(products);
+        setRecyclerListener();
+    }
+
+    private void initProductRecycler() {
+        productsAdapter = new ProductsAdapter(this);
+        productsAdapter.setProducts(products);
         layoutManager = new LinearLayoutManager(this);
         productsRecyclerView.setLayoutManager(layoutManager);
         productsRecyclerView.setHasFixedSize(true);
-        productsRecyclerView.setAdapter(foundProductAdapter);
-        initSearchView();
-        View view = findViewById(R.id.activity_find_products);
-        setHidingMenuOnClick(view);
-        prepareCategoriesSpinner();
-        loadCategories();
-
-        productsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                visibleItemCount = layoutManager.getChildCount();
-                totalItemCount = layoutManager.getItemCount();
-                firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
-                if (!isLoading && !isLastPage) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                            && totalItemCount >= PAGE_SIZE) {
-                        Category category = (Category) categorySpinner.getSelectedItem();
-                        String query = searchView.getQuery().toString();
-                        isLoading = true;
-                        fetchProducts(query, category, currentPageNumber, false);
-                    }
-                }
-            }
-        });
+        productsRecyclerView.setAdapter(productsAdapter);
     }
 
     private void initSearchView() {
@@ -126,38 +116,15 @@ public class FindProducts extends AppCompatActivity {
     }
 
     private void fetchProducts(String query, Category category, int pageNumber, boolean clearList) {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
-        ApiService apiService = retrofit.create(ApiService.class);
-        Call<List<Product>> call = apiService.filterProducts(query, category, pageNumber, PAGE_SIZE);
-        call.enqueue(new Callback<List<Product>>() {
-                         @Override
-                         public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                             if (clearList)
-                                 products.clear();
-                             isLastPage = false;
-                             if (response.body().size() < PAGE_SIZE)
-                                 isLastPage = true;
-                             products.addAll(response.body());
-                             foundProductAdapter.notifyDataSetChanged();
-                             isLoading = false;
-                             currentPageNumber++;
-                         }
-
-                         @Override
-                         public void onFailure(Call<List<Product>> call, Throwable t) {
-                             isLoading = false;
-                         }
-                     }
-        );
-    }
-
-    private void setHidingMenuOnClick(View view) {
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Utils.hideKeyboard(FindProducts.this);
-                return false;
-            }
+        ProductRepository productRepository = new ProductRepository();
+        productRepository.findProducts(query, category, pageNumber, PAGE_SIZE).observe(this, productList -> {
+            if (clearList)
+                products.clear();
+            isLastPage = productList.size() < PAGE_SIZE;
+            products.addAll(productList);
+            productsAdapter.notifyDataSetChanged();
+            isLoading = false;
+            currentPageNumber++;
         });
     }
 
@@ -168,7 +135,7 @@ public class FindProducts extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        Retrofit retrofit = RetrofitBuilder.getRetrofitInstance();
         ApiService apiService = retrofit.create(ApiService.class);
         Call<List<Category>> call = apiService.getCategories();
         call.enqueue(new Callback<List<Category>>() {
@@ -183,5 +150,33 @@ public class FindProducts extends AppCompatActivity {
                          }
                      }
         );
+    }
+
+    private void setRecyclerListener() {
+        productsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                loadDataIfNeededAndPossible();
+            }
+        });
+    }
+
+    private void loadDataIfNeededAndPossible() {
+        visibleItemCount = layoutManager.getChildCount();
+        totalItemCount = layoutManager.getItemCount();
+        firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+        if (!isLoading && !isLastPage && needsLoading()) {
+            Category category = (Category) categorySpinner.getSelectedItem();
+            String query = searchView.getQuery().toString();
+            isLoading = true;
+            fetchProducts(query, category, currentPageNumber, false);
+        }
+    }
+
+    private boolean needsLoading() {
+        return (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                && firstVisibleItemPosition >= 0
+                && totalItemCount >= PAGE_SIZE;
     }
 }

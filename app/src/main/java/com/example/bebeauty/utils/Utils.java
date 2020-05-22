@@ -7,10 +7,17 @@ import android.view.inputmethod.InputMethodManager;
 
 public class Utils {
 
-    public static void hideKeyboard(Activity activity) {
+    public static void setHidingMenuOnClick(View view, Activity activity) {
+        view.setOnTouchListener((v, event) -> {
+            hideKeyboard(activity);
+            return false;
+        });
+    }
+
+    private static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         View currentFocus = activity.getCurrentFocus();
-        if (currentFocus != null)
+        if (imm != null && currentFocus != null)
             imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

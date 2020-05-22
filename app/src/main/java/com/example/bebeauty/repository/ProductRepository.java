@@ -2,32 +2,26 @@ package com.example.bebeauty.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.bebeauty.model.Category;
 import com.example.bebeauty.model.Product;
-import com.example.bebeauty.service.ApiService;
-import com.example.bebeauty.utils.RetrofitInstance;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
-public class ProductRepository {
+public class ProductRepository extends Repository {
 
-    private Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
-    private ApiService apiService = retrofit.create(ApiService.class);
-    MutableLiveData<Boolean> requestSuccess = new MutableLiveData<>();
+    MutableLiveData<List<Product>> products = new MutableLiveData<>();
 
-    public List<Product> getAllProducts() {
-        final List<Product> products = new ArrayList<Product>();
-        Call<List<Product>> call = apiService.getProducts();
+    public MutableLiveData<List<Product>> findProducts(String query, Category category, int pageNumber, int pageSize) {
+        Call<List<Product>> call = apiService.filterProducts(query, category, pageNumber, pageSize);
         call.enqueue(new Callback<List<Product>>() {
                          @Override
                          public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                             products.addAll(response.body());
+                             products.setValue(response.body());
                          }
 
                          @Override
@@ -54,16 +48,16 @@ public class ProductRepository {
         call.enqueue(new Callback<Product>() {
                          @Override
                          public void onResponse(Call<Product> call, Response<Product> response) {
-                             requestSuccess.setValue(true);
+                             requestStatus.setValue(true);
                          }
 
                          @Override
                          public void onFailure(Call<Product> call, Throwable t) {
-                             requestSuccess.setValue(false);
+                             requestStatus.setValue(false);
                          }
                      }
         );
-        return requestSuccess;
+        return requestStatus;
     }
 
     public MutableLiveData<Boolean> updateProduct(Product product) {
@@ -71,15 +65,15 @@ public class ProductRepository {
         call.enqueue(new Callback<Product>() {
                          @Override
                          public void onResponse(Call<Product> call, Response<Product> response) {
-                             requestSuccess.setValue(true);
+                             requestStatus.setValue(true);
                          }
 
                          @Override
                          public void onFailure(Call<Product> call, Throwable t) {
-                             requestSuccess.setValue(false);
+                             requestStatus.setValue(false);
                          }
                      }
         );
-        return requestSuccess;
+        return requestStatus;
     }
 }

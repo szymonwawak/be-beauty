@@ -1,4 +1,4 @@
-package com.example.bebeauty;
+package com.example.bebeauty.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.bebeauty.R;
 import com.example.bebeauty.fragment.ProductComments;
 import com.example.bebeauty.fragment.ProductData;
 import com.example.bebeauty.fragment.ProductIngredients;

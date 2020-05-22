@@ -1,4 +1,4 @@
-package com.example.bebeauty;
+package com.example.bebeauty.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,20 +7,28 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bebeauty.repository.ProductRepository;
+import com.example.bebeauty.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button scanBarcode;
     Button findProducts;
     Button createIngredient;
-    ProductRepository productRepository = new ProductRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+    }
+
+    private void initView() {
+        scanBarcode = findViewById(R.id.scan_barcode);
+        scanBarcode.setOnClickListener(this);
+        findProducts = findViewById(R.id.find_product);
+        findProducts.setOnClickListener(this);
+        createIngredient = findViewById(R.id.create_ingredient);
+        createIngredient.setOnClickListener(this);
     }
 
     @Override
@@ -39,14 +47,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
         }
-    }
-
-    private void initView() {
-        scanBarcode = findViewById(R.id.scan_barcode);
-        scanBarcode.setOnClickListener(this);
-        findProducts = findViewById(R.id.find_product);
-        findProducts.setOnClickListener(this);
-        createIngredient = findViewById(R.id.create_ingredient);
-        createIngredient.setOnClickListener(this);
     }
 }

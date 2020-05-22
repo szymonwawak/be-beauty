@@ -23,17 +23,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditProduct"></activity>
-        <activity android:name=".CreateIngredient" />
-        <activity android:name=".FindProducts" />
-        <activity android:name=".AddComment" />
-        <activity android:name=".CreateProduct" />
-        <activity android:name=".ProductInfo" />
+        <activity android:name=".activity.EditProduct"></activity>
+        <activity android:name=".activity.CreateIngredient" />
+        <activity android:name=".activity.FindProducts" />
+        <activity android:name=".activity.AddComment" />
+        <activity android:name=".activity.CreateProduct" />
+        <activity android:name=".activity.ProductInfo" />
         <activity
-            android:name=".BarcodeScanner"
+            android:name=".activity.BarcodeScanner"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -8,29 +8,25 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bebeauty.FindProducts;
-import com.example.bebeauty.ProductInfo;
 import com.example.bebeauty.R;
+import com.example.bebeauty.activity.FindProducts;
+import com.example.bebeauty.activity.ProductInfo;
 import com.example.bebeauty.model.Product;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoundProductAdapter extends RecyclerView.Adapter<FoundProductAdapter.ProductHolder> {
+public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductHolder> {
 
     private List<Product> products = new ArrayList<>();
     private FindProducts parentContext;
-
-    public List<Product> getProducts() {
-        return products;
-    }
 
     public void setProducts(List<Product> products) {
         this.products = products;
     }
 
-    public FoundProductAdapter(FindProducts parentContext) {
+    public ProductsAdapter(FindProducts parentContext) {
         this.parentContext = parentContext;
     }
 
@@ -38,13 +34,7 @@ public class FoundProductAdapter extends RecyclerView.Adapter<FoundProductAdapte
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product, parent, false);
-        return new FoundProductAdapter.ProductHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
-        holder.name.setText(products.get(position).getName());
-        holder.manufacturer.setText(products.get(position).getManufacturer());
+        return new ProductsAdapter.ProductHolder(itemView);
     }
 
     @Override
@@ -52,11 +42,18 @@ public class FoundProductAdapter extends RecyclerView.Adapter<FoundProductAdapte
         return products.size();
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
+        Product product = products.get(position);
+        holder.name.setText(product.getName());
+        holder.manufacturer.setText(product.getManufacturer());
+    }
+
     class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private MaterialTextView name, manufacturer;
 
-        public ProductHolder(@NonNull View itemView) {
+        ProductHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.product_name);
             manufacturer = itemView.findViewById(R.id.product_manufacturer_value);
@@ -65,6 +62,10 @@ public class FoundProductAdapter extends RecyclerView.Adapter<FoundProductAdapte
 
         @Override
         public void onClick(View view) {
+            openProductInfo();
+        }
+
+        private void openProductInfo() {
             int productIndex = getAdapterPosition();
             Product product = products.get(productIndex);
             Intent intent = new Intent(parentContext, ProductInfo.class);

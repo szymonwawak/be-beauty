@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class RetrofitInstance {
+public class RetrofitBuilder {
 
     private static Retrofit retrofit;
     private static final String BASE_URL = "http://192.168.0.199:8080";
