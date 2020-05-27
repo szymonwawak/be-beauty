@@ -73,7 +73,7 @@ public class AddIngredients extends Fragment {
 
     private void addChosenIngredients() {
         ProductOperations activity = ((ProductOperations) getActivity());
-        activity.setIngredients(storedIngredients);
+        activity.updateIngredientsList();
         getParentFragmentManager().popBackStack();
     }
 

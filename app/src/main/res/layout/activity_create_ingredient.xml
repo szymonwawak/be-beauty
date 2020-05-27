@@ -8,7 +8,7 @@
     android:background="@color/colorSecondaryAccent"
     android:orientation="vertical"
     android:padding="25sp"
-    tools:context=".CreateIngredient">
+    tools:context=".activity.CreateIngredient">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            tools:context=".CreateProduct">
+            tools:context=".activity.CreateProduct">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name_layout"

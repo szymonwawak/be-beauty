@@ -47,9 +47,7 @@ public abstract class ProductOperations extends AppCompatActivity {
 
     abstract void saveProduct();
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients.clear();
-        this.ingredients.addAll(ingredients);
+    public void updateIngredientsList() {
         addedIngredientsAdapter.notifyDataSetChanged();
     }
 

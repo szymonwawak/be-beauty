@@ -82,7 +82,7 @@
         android:text="@string/add_comment"
         android:textSize="18sp"
         app:backgroundTint="@color/colorPrimary"
-        app:icon="@drawable/ic_comment_black_24dp" />
+        app:icon="@drawable/comment" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_product_button"

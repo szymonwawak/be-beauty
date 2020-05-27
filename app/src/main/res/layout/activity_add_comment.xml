@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="25sp"
     android:id="@+id/activity_add_comment"
-    tools:context=".AddComment">
+    tools:context=".activity.AddComment">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            tools:context=".CreateProduct">
+            tools:context=".activity.CreateProduct">
 
             <RatingBar
                 android:id="@+id/score_value"

@@ -48,11 +48,11 @@ public class EditProduct extends ProductOperations {
                 Intent intent = new Intent(EditProduct.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                toast = Toast.makeText(getApplicationContext(), "Produkt został dodany!", Toast.LENGTH_LONG);
+                toast = Toast.makeText(getApplicationContext(), "Edycja przebiegła pomyślnie!", Toast.LENGTH_LONG);
                 toast.show();
                 finish();
             } else {
-                toast = Toast.makeText(getApplicationContext(), "Nie udało się dodać produktu. Spróbuj ponownie", Toast.LENGTH_LONG);
+                toast = Toast.makeText(getApplicationContext(), "Nie udało się zapisać produktu. Spróbuj ponownie", Toast.LENGTH_LONG);
                 toast.show();
             }
         });

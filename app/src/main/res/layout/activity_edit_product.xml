@@ -9,7 +9,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:padding="20sp"
-    tools:context=".EditProduct">
+    tools:context=".activity.EditProduct">
 
 
     <com.google.android.material.card.MaterialCardView
@@ -51,7 +51,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical"
-                tools:context=".CreateProduct">
+                tools:context=".activity.CreateProduct">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/inputStyle"
